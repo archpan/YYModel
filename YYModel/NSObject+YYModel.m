@@ -909,8 +909,8 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                                         if (!cls) cls = meta->_genericCls; // for xcode code coverage
                                     }
                                     NSObject *newOne = [cls new];
-                                    [newOne yy_modelSetWithDictionary:one];
-                                    if (newOne) [objectArr addObject:newOne];
+                                    BOOL suucess = [newOne yy_modelSetWithDictionary:one];
+                                    if (suucess) [objectArr addObject:newOne];
                                 }
                             }
                             ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, objectArr);
@@ -949,8 +949,8 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                                         if (!cls) cls = meta->_genericCls; // for xcode code coverage
                                     }
                                     NSObject *newOne = [cls new];
-                                    [newOne yy_modelSetWithDictionary:(id)oneValue];
-                                    if (newOne) dic[oneKey] = newOne;
+                                    BOOL success = [newOne yy_modelSetWithDictionary:(id)oneValue];
+                                    if (success) dic[oneKey] = newOne;
                                 }
                             }];
                             ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, dic);
@@ -984,8 +984,8 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                                     if (!cls) cls = meta->_genericCls; // for xcode code coverage
                                 }
                                 NSObject *newOne = [cls new];
-                                [newOne yy_modelSetWithDictionary:one];
-                                if (newOne) [set addObject:newOne];
+                                BOOL success = [newOne yy_modelSetWithDictionary:one];
+                                if (success) [set addObject:newOne];
                             }
                         }
                         ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, set);
@@ -1024,8 +1024,10 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                             cls = [cls modelCustomClassForDictionary:value] ?: cls;
                         }
                         one = [cls new];
-                        [one yy_modelSetWithDictionary:value];
-                        ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, (id)one);
+                        BOOL success = [one yy_modelSetWithDictionary:value];
+                        if (success) {
+                            ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, (id)one);
+                        }
                     }
                 }
             } break;
